@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form name="createForm" id="createForm" th:action="@{/createDep}" method="post">
+    <p>Выберите департамент : <select id="id" name="id">
+        <option value="off" disabled selected>Выберите департамент</option>
+        <option th:each="d: ${departments}" th:value="${d.id}" th:text="${d.name}"/>
+    </select></p>
+    <div>
+        <textarea name="name"></textarea>
+    </div>
+    <br/>
+    <input type="button" value="Изменить название департамента" onclick="changeDepartment()">
+</form>
+<br/>
+<form name="createForm" th:action="@{/createDep}" method="post" id="sendDep">
+    <input type="hidden" th:value="-1" name="id"/>
+    <textarea name="name"></textarea>
+    <input type="button" value="Создать новый департамент" onclick="createDepartment();">
+</form>
+<script>
+    function createDepartment() {
+        document.getElementById("sendDep").submit();
+        window.location.reload(false);
+    }
+
+    function changeDepartment() {
+        document.getElementById("createForm").submit();
+        window.location.reload(false);
+    }
+</script>
+</body>
+</html>

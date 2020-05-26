@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        .tabs {
+            width: 100%;
+            padding: 0px;
+            margin: 0 auto;
+        }
+
+        .tabs > input {
+            display: none;
+        }
+
+        .tabs > div {
+            display: none;
+            padding: 12px;
+            border: 1px solid #C0C0C0;
+            background: #FFFFFF;
+        }
+
+        .tabs > label {
+            display: inline-block;
+            padding: 7px;
+            margin: 0 -5px -1px 0;
+            text-align: center;
+            color: #666666;
+            border: 1px solid #C0C0C0;
+            background: #E0E0E0;
+            cursor: pointer;
+        }
+
+        .tabs > input:checked + label {
+            color: #000000;
+            border: 1px solid #C0C0C0;
+            border-bottom: 1px solid #FFFFFF;
+            background: #FFFFFF;
+        }
+
+        #tab_1:checked ~ #txt_1,
+        #tab_2:checked ~ #txt_2,
+        #tab_3:checked ~ #txt_3,
+        #tab_4:checked ~ #txt_4,
+        #tab_5:checked ~ #txt_5,
+        #tab_6:checked ~ #txt_6,
+        #tab_7:checked ~ #txt_7,
+        #tab_8:checked ~ #txt_8,
+        #tab_9:checked ~ #txt_9,
+        #tab_10:checked ~ #txt_10,
+        #tab_11:checked ~ #txt_11,
+        #tab_12:checked ~ #txt_12 {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/logout}" method="post" id="logoutForm">
+    <input type="hidden" name="${_csrf.parameterName}"
+           value="${_csrf.token}"/>
+</form>
+<div th:if="${msg!=null}">
+    <div class="msg">[[${msg}]]</div>
+</div>
+
+<div th:if="${#request.userPrincipal} != null">
+    <h2>
+        User : [[${#request.userPrincipal.name}]] | <a
+            href="javascript:formSubmit()"> Logout</a>
+    </h2>
+</div>
+<table>
+    <tr>
+        <th>
+            <H2>Департаменты</H2>
+        </th>
+        <th>
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <table>
+                <tr th:each="department : ${departments}">
+                    <form th:action="@{/list}" method="get" id="depForm">
+                        <p><input type="button" onclick="submit()" th:value="${department.name}" name="department"
+                                  class="btn btn-default"></p>
+                        <input type="hidden" th:value="${department.id}" name="departmentId" id="departmentId"/>
+                    </form>
+                <tr/>
+
+            </table>
+        </td>
+        <td>
+            <form th:action="@{/list}" method="get" id="monthForm">
+                <input type="hidden" name="departmentId" id="depId"/>
+                <div class="tabs">
+                    <input type="radio" name="month" value="01" id="tab_1" onchange="submit()" th:checked="${jan}">
+                    <label for="tab_1">Январь</label>
+                    <input type="radio" name="month" value="02" id="tab_2" onchange="submit()" th:checked="${feb}">
+                    <label for="tab_2">Февраль</label>
+                    <input type="radio" name="month" value="03" id="tab_3" onchange="submit()" th:checked="${mar}">
+                    <label for="tab_3">Март</label>
+                    <input type="radio" name="month" value="04" id="tab_4" onchange="submit()" th:checked="${apr}">
+                    <label for="tab_4">Апрель</label>
+                    <input type="radio" name="month" value="05" id="tab_5" onchange="submit()" th:checked="${mai}">
+                    <label for="tab_5">Май</label>
+                    <input type="radio" name="month" value="06" id="tab_6" onchange="submit()" th:checked="${iun}">
+                    <label for="tab_6">Июнь</label>
+                    <input type="radio" name="month" value="07" id="tab_7" onchange="submit()" th:checked="${iul}">
+                    <label for="tab_7">Июль</label>
+                    <input type="radio" name="month" value="08" id="tab_8" onchange="submit()" th:checked="${avg}">
+                    <label for="tab_8">Август</label>
+                    <input type="radio" name="month" value="09" id="tab_9" onchange="submit()" th:checked="${sen}">
+                    <label for="tab_9">Сентябрь</label>
+                    <input type="radio" name="month" value="10" id="tab_10" onchange="submit()" th:checked="${okt}">
+                    <label for="tab_10">Октябрь</label>
+                    <input type="radio" name="month" value="11" id="tab_11" onchange="submit()" th:checked="${noj}">
+                    <label for="tab_11">Ноябрь</label>
+                    <input type="radio" name="month" value="12" id="tab_12" onchange="submit()" th:checked="${dec}">
+                    <label for="tab_12">Декабрь</label>
+                    <div id="txt_1">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                    <td th:text="${w.name}"></td>
+                                    <td th:text="${w.employment}"></td>
+                                    <td th:text="${w.number}"></td>
+                                    <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_2">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_3">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_4">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_5">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_6">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_7">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_8">
+                        <table>
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                    <td th:text="${w.name}"></td>
+                                    <td th:text="${w.employment}"></td>
+                                    <td th:text="${w.number}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_9">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_10">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_11">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="txt_12">
+                        <table border="1">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>Должность</td>
+                                <td>Табельный №</td>
+                                <td th:each="n : ${size}" th:text="${n}"/>
+                            </tr>
+                            <tr th:each="w : ${workers}">
+                                <td th:text="${w.name}"></td>
+                                <td th:text="${w.employment}"></td>
+                                <td th:text="${w.number}"></td>
+                                <td th:each="d : ${w.markers}" th:text="${d.sign}"/>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </td>
+    </tr>
+</table>
+<br/>
+<form th:action="@{/createWork}" method="get">
+    <p><input type="submit" value="Справочник работников" name="add" class="btn btn-default"></p>
+</form>
+<br/>
+<form th:action="@{/createDep}" method="get">
+    <p><input type="submit" value="Справочник департаментов" name="add" class="btn btn-default"></p>
+</form>
+<br/>
+<form th:action="@{/changeTime}" method="get">
+    <p><input type="submit" value="Рабочее время" name="add" class="btn btn-default"></p>
+</form>
+<script>
+    function formSubmit() {
+        document.getElementById("logoutForm").submit();
+    }
+</script>
+</body>
+</html>

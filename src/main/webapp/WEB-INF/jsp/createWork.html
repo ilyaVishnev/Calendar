@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<form name="createForm" id="create" th:action="@{/createWork}" method="get">
+    <p>Выберите работника(при создании оставить по умолчанию) : <select id="w_id" name="w_id" onchange="submit()">
+        <option value="-1" disabled selected>Выберите номер работника</option>
+        <option th:each="w: ${workers}" th:value="${w.number}" th:text="${w.number}"
+                th:selected="${selworker==w.number}"/>
+    </select></p>
+</form>
+<form name="createForm" id="createForm" th:action="@{/createWork}" method="post">
+    <input type="hidden" name="number" id="number"/>
+    <p>Выберите департамент : <select id="id" name="dep_id">
+        <option value="-1" disabled selected>Выберите название департамент</option>
+        <option th:each="d: ${departments}" th:value="${d.id}" th:text="${d.id}" th:selected="${seldep==d.id}"/>
+    </select></p>
+    <p>Введите имя : <textarea name="first_name" th:text="${first_name}"></textarea></p>
+    <p>Введите отчество : <textarea name="middle_name" th:text="${middle_name}"></textarea></p>
+    <p>Введите фамилию : <textarea name="second_name" th:text="${second_name}"></textarea></p>
+    <p>Выберите год рождения : <input type="date" name="birth" th:value="${birthdate}"></p>
+    <p>Введите должность : <textarea name="employment" th:text="${employment}"></textarea></p>
+    <p>Удаленная работа : <select id="remoute_workspace" name="remoute_workspace">
+        <option th:value="${selRum}" th:text="${selRum}" th:selected="${selRem}"/>
+        <option th:value="not ${selRum}" th:text="not ${selRum}"/>
+    </select></p>
+    <p>Адрес проживания : <textarea name="address" th:text="${address}"></textarea></p>
+</form>
+<input type="button" value="Добавить/Изменить работника" onclick="createWorker();">
+<script>
+    function createWorker() {
+        document.getElementById("number").value = document.getElementById("w_id").value;
+        document.getElementById("createForm").submit();
+        window.location.reload(false);
+    }
+
+</script>
+</body>
+
+</html>
